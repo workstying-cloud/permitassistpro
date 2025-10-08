@@ -1,0 +1,19 @@
+{
+  "name": "permitassist-pro",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "packages/config/*"
+  ],
+  "scripts": {
+    "bootstrap": "npm install && npm run prisma:generate",
+    "dev": "npm run dev --workspace apps/web",
+    "lint": "npm run lint --workspace apps/web",
+    "typecheck": "npm run typecheck --workspace apps/web",
+    "test": "npm run test --workspace apps/web",
+    "build": "npm run build --workspace apps/web",
+    "db-migrate": "npm run db-migrate --workspace apps/web",
+    "seed": "npm run seed --workspace apps/web",
+    "prisma:generate": "npx prisma generate"
+  }
+}

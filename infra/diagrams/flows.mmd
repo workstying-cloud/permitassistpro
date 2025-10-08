@@ -1,0 +1,19 @@
+```mermaid
+sequenceDiagram
+  participant User
+  participant Marketing
+  participant API
+  participant DB
+  participant Email
+
+  User->>Marketing: Open /
+  User->>Marketing: Request Demo form submit
+  Marketing->>API: lead.create
+  API->>DB: save Lead
+  API->>Email: send ack + internal alert
+  User->>Portal: Sign-in via magic link
+  Portal->>App: Create org & location
+  App->>Rules: scan(city, sector)
+  App->>Filing: checklist + uploads
+  App->>ProofPack: generate + download
+```

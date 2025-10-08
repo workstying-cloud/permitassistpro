@@ -1,0 +1,9 @@
+node_modules
+.next
+.env
+.env.local
+apps/web/.env.local
+apps/web/prisma
+playwright-report
+coverage
+.DS_Store

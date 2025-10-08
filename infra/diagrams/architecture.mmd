@@ -1,0 +1,11 @@
+```mermaid
+graph TD
+  A[Next.js App] -->|tRPC| B[API Routes]
+  B --> C[Prisma]
+  C --> D[(PostgreSQL)]
+  B --> E[Stripe]
+  B --> F[SMTP Titan]
+  B --> G[S3/Storage]
+  B --> H[Redis/Queue]
+  A --> I[next-intl i18n]
+```

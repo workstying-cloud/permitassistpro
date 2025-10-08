@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum Plan {
+  MONITOR
+  CONCIERGE
+}
+
+enum FilingStatus {
+  PENDING
+  IN_PROGRESS
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id             String      @id @default(cuid())
+  email          String      @unique
+  name           String?
+  orgMemberships OrgMember[]
+  createdAt      DateTime    @default(now())
+}
+
+model Org {
+  id           String       @id @default(cuid())
+  name         String
+  ownerId      String
+  owner        User         @relation(fields: [ownerId], references: [id])
+  locations    Location[]
+  subscriptions Subscription[]
+  members      OrgMember[]
+  auditLogs    AuditLog[]
+  createdAt    DateTime     @default(now())
+}
+
+model OrgMember {
+  id     String @id @default(cuid())
+  role   Role   @default(MEMBER)
+  userId String
+  orgId  String
+  user   User   @relation(fields: [userId], references: [id])
+  org    Org    @relation(fields: [orgId], references: [id])
+}
+
+model Location {
+  id         String   @id @default(cuid())
+  orgId      String
+  org        Org      @relation(fields: [orgId], references: [id])
+  city       String
+  province   String
+  country    String
+  sector     String
+  plan       Plan
+  filings    Filing[]
+  renewals   Renewal[]
+  createdAt  DateTime @default(now())
+}
+
+model Rule {
+  id            String   @id @default(cuid())
+  city          String
+  sector        String
+  name          String
+  description   String
+  estFee        Int?
+  dependencies  String[]
+  docChecklist  String[]
+  updatedAt     DateTime @updatedAt
+}
+
+model Filing {
+  id           String       @id @default(cuid())
+  locationId   String
+  location     Location     @relation(fields: [locationId], references: [id])
+  ruleId       String
+  rule         Rule         @relation(fields: [ruleId], references: [id])
+  status       FilingStatus @default(PENDING)
+  attachments  Json?
+  submittedAt  DateTime?
+  receiptUrl   String?
+}
+
+model Renewal {
+  id          String   @id @default(cuid())
+  locationId  String
+  ruleId      String
+  dueDate     DateTime
+  status      String
+  notifiedAt  DateTime?
+}
+
+model ProofPack {
+  id         String   @id @default(cuid())
+  locationId String
+  artifacts  Json
+  url        String
+  createdAt  DateTime @default(now())
+}
+
+model Subscription {
+  id                String   @id @default(cuid())
+  orgId             String
+  org               Org      @relation(fields: [orgId], references: [id])
+  stripeCustomerId  String
+  stripeSubId       String
+  plan              Plan
+  locations         Int      @default(1)
+  active            Boolean  @default(false)
+  currentPeriodEnd  DateTime?
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  email     String
+  name      String?
+  orgName   String?
+  city      String?
+  sector    String?
+  message   String?
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  orgId     String
+  org       Org      @relation(fields: [orgId], references: [id])
+  actorId   String?
+  action    String
+  payload   Json?
+  createdAt DateTime @default(now())
+}
