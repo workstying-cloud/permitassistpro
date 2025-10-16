@@ -1,4 +1,4 @@
-import { leadSchema } from '@/app/api/lead/route';
+import { leadSchema } from '@/lib/validation/leadSchema';
 
 describe('leadSchema', () => {
   it('validates a complete payload', () => {
@@ -18,3 +18,4 @@ describe('leadSchema', () => {
     expect(() => leadSchema.parse({ email: 'bad-email' })).toThrow();
   });
 });
+
