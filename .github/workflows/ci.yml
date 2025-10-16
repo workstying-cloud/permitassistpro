@@ -11,20 +11,27 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Install dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps
+
       - name: Lint
         run: npm run lint
+
       - name: Typecheck
         run: npm run typecheck
+
       - name: Test
         run: npm test -- --ci
+
       - name: Build
         run: npm run build
+
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -32,3 +39,4 @@ jobs:
           name: playwright-report
           path: apps/web/playwright-report
           if-no-files-found: ignore
+
