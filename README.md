@@ -16,7 +16,7 @@ PermitAssist Pro is a paid-only B2B SaaS that turns municipal permits, renewals,
 - Prisma ORM with PostgreSQL (Supabase or RDS)
 - NextAuth email magic links, Stripe billing, Titan SMTP via Nodemailer
 - Redis-compatible background jobs (BullMQ-ready), S3-compatible storage
-- Testing with Jest + Testing Library and Playwright
+- Testing with Jest + Testing Library (unit and integration coverage)
 
 ## Getting Started
 
