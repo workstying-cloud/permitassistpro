@@ -1,7 +1,3 @@
-// -------------------------------------------------------
-// PermitAssist Pro - Prisma Schema
-// -------------------------------------------------------
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,10 +6,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
-// -------------------------------------------------------
-// ENUMS
-// -------------------------------------------------------
 
 enum Role {
   OWNER
@@ -34,19 +26,12 @@ enum FilingStatus {
   REJECTED
 }
 
-// -------------------------------------------------------
-// MODELS
-// -------------------------------------------------------
-
 model User {
   id             String      @id @default(cuid())
   email          String      @unique
   name           String?
   orgMemberships OrgMember[]
-
-  // Opposite of Org.owner
   ownedOrgs      Org[]       @relation("OrgOwner")
-
   createdAt      DateTime    @default(now())
 }
 
@@ -54,10 +39,7 @@ model Org {
   id             String        @id @default(cuid())
   name           String
   ownerId        String
-
-  // Name the relation to match User.ownedOrgs
   owner          User          @relation("OrgOwner", fields: [ownerId], references: [id])
-
   locations      Location[]
   subscriptions  Subscription[]
   members        OrgMember[]
@@ -98,8 +80,6 @@ model Rule {
   dependencies  String[]
   docChecklist  String[]
   updatedAt     DateTime   @updatedAt
-
-  // Opposite of Filing.rule
   filings       Filing[]
 }
 
@@ -122,8 +102,6 @@ model Renewal {
   dueDate     DateTime
   status      String
   notifiedAt  DateTime?
-
-  // Opposite of Location.renewals
   location    Location   @relation(fields: [locationId], references: [id])
 }
 
