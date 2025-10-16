@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
@@ -27,16 +28,16 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      # ✅ Run only unit tests in CI (skip Playwright / E2E)
+      # ✅ Run only unit tests in CI to ensure Vercel build passes
       - name: Test (unit only)
         run: npm run test:unit
 
       - name: Build
         run: npm run build
 
-      # Optional — keep Playwright report upload for local or future CI runs
+      # ✅ Upload Playwright report only if it exists (optional)
       - name: Upload Playwright report
-        if: always()
+        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
