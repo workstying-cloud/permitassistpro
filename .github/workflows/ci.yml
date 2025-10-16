@@ -22,19 +22,19 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Lint
-        run: npm run lint
+        run: npm run lint --workspace apps/web
 
       - name: Typecheck
-        run: npm run typecheck
+        run: npm run typecheck --workspace apps/web
 
-      # ✅ Run only unit tests in CI to ensure Vercel build passes
+      # ✅ Run only unit tests (point to apps/web workspace)
       - name: Test (unit only)
-        run: npm run test:unit
+        run: npm run test:unit --workspace apps/web
 
       - name: Build
-        run: npm run build
+        run: npm run build --workspace apps/web
 
-      # ✅ Upload Playwright report only if it exists (optional)
+      # ✅ Optional Playwright report upload
       - name: Upload Playwright report
         if: success() || failure()
         uses: actions/upload-artifact@v4
