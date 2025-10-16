@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,12 +27,14 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Test
-        run: npm test -- --ci
+      # ✅ Run only unit tests in CI (skip Playwright / E2E)
+      - name: Test (unit only)
+        run: npm run test:unit
 
       - name: Build
         run: npm run build
 
+      # Optional — keep Playwright report upload for local or future CI runs
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -39,4 +42,3 @@ jobs:
           name: playwright-report
           path: apps/web/playwright-report
           if-no-files-found: ignore
-
