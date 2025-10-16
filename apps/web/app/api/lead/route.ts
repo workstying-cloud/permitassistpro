@@ -1,18 +1,7 @@
 import { prisma } from '@/lib/db';
 import { sendMail } from '@/lib/mailer';
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
-
-export const leadSchema = z.object({
-  email: z.string().email(),
-  name: z.string().min(1).optional(),
-  orgName: z.string().min(1).optional(),
-  city: z.string().min(1).optional(),
-  sector: z.string().min(1).optional(),
-  message: z.string().max(1500).optional(),
-});
-
-type LeadSchema = z.infer<typeof leadSchema>;
+import { leadSchema, LeadSchema } from '@/lib/validation/leadSchema';
 
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
