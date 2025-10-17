@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "bootstrap": "npm install && npm run prisma:generate",
+    "postinstall": "npx prisma generate",
     "dev": "npm run dev --workspace apps/web",
     "lint": "npm run lint --workspace apps/web",
     "typecheck": "npm run typecheck --workspace apps/web",
@@ -15,5 +16,10 @@
     "db-migrate": "npm run db-migrate --workspace apps/web",
     "seed": "npm run seed --workspace apps/web",
     "prisma:generate": "npx prisma generate"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17"
   }
 }
